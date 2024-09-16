@@ -18,7 +18,7 @@ while (window.IsOpen)
     window.DispatchEvents();
 
     game.Update(deltaTime);
-    window.Clear(new Color(131, 197, 235));
+    window.Clear(new Color(0, 40, 80));
 
     game.Render(window);
     window.Display();
