@@ -1,34 +1,23 @@
-﻿using System.Numerics;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 
 namespace Breakout.Model;
 
-public abstract class CollidableRectangle : ICollidable
+public class CollidableRectangle(Vector2f size) : RectangleShape(size)
 {
-    private RectangleShape _rectangle;
-    public RectangleShape Rectangle { get => _rectangle; }
-
-    public CollidableRectangle(RectangleShape rectangle)
-    {
-        _rectangle = rectangle;
-    }
-
     public bool Intersects(RectangleShape other)
     {
-        return other.Position.X < _rectangle.Position.X + _rectangle.Size.X &&
-               other.Position.X > _rectangle.Position.X - other.Size.X &&
-               other.Position.Y < _rectangle.Position.Y + _rectangle.Size.Y &&
-               other.Position.Y > _rectangle.Position.Y - other.Size.Y;
+        return other.Position.X < Position.X + Size.X &&
+               other.Position.X > Position.X - other.Size.X &&
+               other.Position.Y < Position.Y + Size.Y &&
+               other.Position.Y > Position.Y - other.Size.Y;
     }
 
     public bool ContainsPoint(Vector2f point)
     {
-        return point.X > _rectangle.Position.X &&
-               point.X < _rectangle.Position.X + _rectangle.Size.X &&
-               point.Y > _rectangle.Position.Y &&
-               point.Y < _rectangle.Position.Y + _rectangle.Size.Y;
+        return point.X > Position.X &&
+               point.X < Position.X + Size.X &&
+               point.Y > Position.Y &&
+               point.Y < Position.Y + Size.Y;
     }
-
-    public abstract void HandleCollision();
 }
