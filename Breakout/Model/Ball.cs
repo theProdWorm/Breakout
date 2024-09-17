@@ -27,23 +27,28 @@ public class Ball : Renderable, ICollidable
         RectangleShape rectangle = new RectangleShape();
         rectangle.Size = new Vector2f(_circle.Radius * 2, _circle.Radius * 2);
         rectangle.Position = _circle.Position;
-        if (other.Intersects(rectangle) && CircleIntersects(rectangle))
+        if (other.Intersects(rectangle) && CircleIntersects(other))
         {
             HandleCollision();
             other.HandleCollision();
         }
     }
 
-    private bool CircleIntersects(RectangleShape other)
+    private bool CircleIntersects(CollidableRectangle other) //TODO: out collisionpoint? 
     {
-        if (GetDistanceF(CircleCenter, other.Position) <= _circle.Radius || //Check rectangle top left corner intersect
-            GetDistanceF(CircleCenter, other.Position + new Vector2f(other.Size.X, 0)) <= _circle.Radius || //Check rectangle top right corner intersect
-            GetDistanceF(CircleCenter, other.Position + new Vector2f(0, other.Size.Y)) <= _circle.Radius || //Check rectangle bottom left corner intersect
-            GetDistanceF(CircleCenter, other.Position + other.Size) <= _circle.Radius) //Check rectangle bottom right corner intersect
+        if (GetDistanceF(CircleCenter, other.Rectangle.Position) <= _circle.Radius || //Check rectangle top left corner intersect
+            GetDistanceF(CircleCenter, other.Rectangle.Position + new Vector2f(other.Rectangle.Size.X, 0)) <= _circle.Radius || //Check rectangle top right corner intersect
+            GetDistanceF(CircleCenter, other.Rectangle.Position + new Vector2f(0, other.Rectangle.Size.Y)) <= _circle.Radius || //Check rectangle bottom left corner intersect
+            GetDistanceF(CircleCenter, other.Rectangle.Position + other.Rectangle.Size) <= _circle.Radius) //Check rectangle bottom right corner intersect
             return true;
         
-        //TODO: Check non-corner intersects (lines)
-        throw new NotImplementedException();
+        if (other.ContainsPoint(CircleCenter + new Vector2f(0, _circle.Radius * -1)) || //Check circle topmost point intersect
+            other.ContainsPoint(CircleCenter + new Vector2f(_circle.Radius, 0)) || //Check circle rightmost point intersect
+            other.ContainsPoint(CircleCenter + new Vector2f(0, _circle.Radius)) || //Check circle bottommost point intersect
+            other.ContainsPoint(CircleCenter + new Vector2f(_circle.Radius * -1, 0))) //Check circle leftmost point intersect
+            return true;
+
+        return false;
     }
 
     private Vector2f GetDistance(Vector2f position1, Vector2f position2)
