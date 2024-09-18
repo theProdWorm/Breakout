@@ -25,7 +25,7 @@ public class Vector2D(float x, float y)
     public static Vector2D operator +(Vector2D v1, Vector2f v2) => new Vector2D(v1.X + v2.X, v1.Y + v2.Y);
     public static Vector2D operator +(Vector2f v1, Vector2D v2) => new Vector2D(v1.X + v2.X, v1.Y + v2.Y);
     public static Vector2D operator -(Vector2D v1, Vector2D v2) => new Vector2D(v1.X - v2.X, v1.Y - v2.Y);
-    public static Vector2D operator -(Vector2D v1, Vector2f v2) => new Vector2D(v1.X - v1.X, v1.Y - v2.Y);
+    public static Vector2D operator -(Vector2D v1, Vector2f v2) => new Vector2D(v1.X - v2.X, v1.Y - v2.Y);
     public static Vector2D operator -(Vector2f v1, Vector2D v2) => new Vector2D(v1.X - v2.X, v1.Y - v2.Y);
 
     public static Vector2D operator *(Vector2D v, float m) => new Vector2D(v.X * m, v.Y * m);

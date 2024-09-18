@@ -8,7 +8,7 @@ var window = new RenderWindow(
 
 window.Closed += (o, e) => window.Close();
 
-Game game = new();
+Game game = new(700, 500);
 Clock clock = new Clock();
 while (window.IsOpen)
 {
