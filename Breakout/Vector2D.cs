@@ -5,6 +5,7 @@ namespace Breakout;
 public class Vector2D(float x, float y)
 {
     public static Vector2D One => new Vector2D(1, 1);
+    public static Vector2D NegativeOne => new Vector2D(-1, -1);
     public static Vector2D Zero => new Vector2D(0, 0);
     
     public static Vector2D Left => new Vector2D(-1, 0);
@@ -16,6 +17,7 @@ public class Vector2D(float x, float y)
     public float Y { get; } = y;
 
     public float Magnitude => MathF.Sqrt(X * X + Y * Y);
+    public Vector2D Normalized => new(X / Magnitude, Y / Magnitude);
 
     public Vector2D(float xy) : this(xy, xy)
     {

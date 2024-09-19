@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\josef\\Documents\\HiS\\År 1\\[1] Spelprogrammering 1\\Breakout\\Breakout\\Breakout.csproj": {}
+    "C:\\Users\\emilr\\RiderProjects\\Breakout\\Breakout\\Breakout.csproj": {}
   },
   "projects": {
-    "C:\\Users\\josef\\Documents\\HiS\\År 1\\[1] Spelprogrammering 1\\Breakout\\Breakout\\Breakout.csproj": {
+    "C:\\Users\\emilr\\RiderProjects\\Breakout\\Breakout\\Breakout.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\josef\\Documents\\HiS\\År 1\\[1] Spelprogrammering 1\\Breakout\\Breakout\\Breakout.csproj",
+        "projectUniqueName": "C:\\Users\\emilr\\RiderProjects\\Breakout\\Breakout\\Breakout.csproj",
         "projectName": "Breakout",
-        "projectPath": "C:\\Users\\josef\\Documents\\HiS\\År 1\\[1] Spelprogrammering 1\\Breakout\\Breakout\\Breakout.csproj",
-        "packagesPath": "C:\\Users\\josef\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\josef\\Documents\\HiS\\År 1\\[1] Spelprogrammering 1\\Breakout\\Breakout\\obj\\",
+        "projectPath": "C:\\Users\\emilr\\RiderProjects\\Breakout\\Breakout\\Breakout.csproj",
+        "packagesPath": "C:\\Users\\emilr\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\emilr\\RiderProjects\\Breakout\\Breakout\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\josef\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\emilr\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -75,7 +68,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

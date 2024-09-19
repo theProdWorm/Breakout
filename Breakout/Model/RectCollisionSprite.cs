@@ -5,7 +5,7 @@ namespace Breakout.Model;
 
 public class RectCollisionSprite(Texture texture) : Sprite(texture)
 {
-    public CollidableRectangle Collider { get; } = new((Vector2f) texture.Size);
+    public CollidableRectangle Collider { get; } = new((Vector2f)texture.Size);
 
     public new Vector2f Position
     {
@@ -26,4 +26,6 @@ public class RectCollisionSprite(Texture texture) : Sprite(texture)
             Collider.Scale = value;
         }
     }
+
+    public Vector2f Size => new Vector2D(Collider.Size.X * Scale.X, Collider.Size.Y * Scale.Y);
 }
