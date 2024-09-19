@@ -10,6 +10,9 @@ public class Game
     private static readonly Random _random = new Random();
     private static readonly float _scale = 0.6f;
 
+    private readonly int _screenWidth;
+    private readonly int _screenHeight;
+
     private readonly Texture _blueBrick;
     private readonly Texture _greenBrick;
     private readonly Texture _pinkBrick;
@@ -30,17 +33,28 @@ public class Game
     private int _timesCleared;
 
     private bool _isGameRunning;
+    private bool _isGameOver;
 
     private readonly Ball _ball;
     private readonly Paddle _paddle;
 
-    private readonly Text _scoreDisplay;
-    private readonly Text _healthDisplay;
+    private readonly Font _font;
+    private Text _scoreDisplay;
+    private Text _healthDisplay;
+    private Text _gameOverMessage;
+    private Text _newGamePrompt;
 
-    public Game(int screenWidth, int screenHeight)
+    private Action _closeAction;
+
+    public Game(int screenWidth, int screenHeight, Action closeAction)
     {
+        _screenWidth = screenWidth;
+        _screenHeight = screenHeight;
+        
+        _closeAction = closeAction;
+        
         _brickOffsets = new Vector2D(200, 100) * _scale;
-        _brickOrigin = new Vector2D(50, 20);
+        _brickOrigin = new Vector2D(50, 50);
         
         Texture ballTexture = new("Assets/ball.png");
         Texture paddleTexture = new("Assets/paddle.png");
@@ -60,8 +74,14 @@ public class Game
         ];
         _hurtBox = new CollidableRectangle(new Vector2f(screenWidth, 10), new Vector2f(0, screenHeight));
         
-        _ball = new Ball(ballTexture, new CircleShape(30), _scale, screenWidth, screenHeight);
+        _ball = new Ball(ballTexture, new CircleShape(30), _scale, new Vector2D(screenWidth * 0.5f - 30, screenHeight - 95));
         _paddle = new Paddle(paddleTexture, Vector2D.One * 0.25f, screenWidth, screenHeight, leftWall, rightWall);
+        
+        _font = new Font("Assets/future.ttf");
+        _gameOverMessage = new Text("Game Over", _font, 40);
+        _gameOverMessage.Position = new Vector2f((float)screenWidth / 2 - _gameOverMessage.GetGlobalBounds().Width / 2, (float)screenHeight / 2 - _gameOverMessage.GetGlobalBounds().Height / 2);
+        _newGamePrompt = new Text("[E] New Game   [Esc] Exit", _font, 16);
+        _newGamePrompt.Position = new Vector2f((float)screenWidth / 2 - _newGamePrompt.GetGlobalBounds().Width / 2, (float)screenHeight / 2 + 40);
         
         NewGame();
     }
@@ -76,8 +96,11 @@ public class Game
         _paddle.Reset();
         
         _isGameRunning = false;
+        _isGameOver = false;
         
         GenerateBricks();
+
+        UpdateUI();
     }
 
     private void GenerateBricks()
@@ -116,6 +139,7 @@ public class Game
             _ball.HandleCollision(brickCollisionPoint);
             _bricks.RemoveAt(i--);
             _score += _timesCleared + 1;
+            UpdateUI();
         }
         
         foreach (var wall in _walls)
@@ -129,56 +153,86 @@ public class Game
             _ball.HandleCollision(paddleCollisionPoint);
         }
         
-        if (_ball.WillCollide(deltaTime, _hurtBox, out Vector2D collision))
+        if (_ball.WillCollide(deltaTime, _hurtBox, out _))
         {
             _health--;
+            _isGameRunning = false;
             _ball.Reset();
+            _paddle.Reset();
+            UpdateUI();
         }
+    }
+
+    private void UpdateUI()
+    {
+        _scoreDisplay = new Text($"{_score} Points", _font, 20);
+        _scoreDisplay.Position = new Vector2f(_screenWidth - _scoreDisplay.GetGlobalBounds().Width - 10, 10);
+        _healthDisplay = new Text($"{_health} Health", _font, 20);
+        _healthDisplay.Position = new Vector2f(10, 10);
     }
 
     public void Update(float deltaTime)
     {
-        if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+        if (!_isGameOver)
         {
-            _isGameRunning = true;
-            _ball.Start();
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space) && !_isGameRunning)
+            {
+                _isGameRunning = true;
+                _ball.Start();
+            }
+
+            if (!_isGameRunning)
+                return;
+
+            if (_bricks.Count == 0)
+            {
+                _ball.Reset();
+                _paddle.Reset();
+                _isGameRunning = false;
+                _timesCleared++;
+
+                GenerateBricks();
+            }
+
+            _paddle.Update(deltaTime);
+
+            CheckCollision(deltaTime);
+            _ball.Update(deltaTime);
+
+            if (_health > 0)
+                return;
+
+            _isGameOver = true;
         }
-
-        if (!_isGameRunning)
-            return;
-
-        if (_bricks.Count == 0)
+        else
         {
-            _ball.Reset();
-            _paddle.Reset();
-            _isGameRunning = false;
-
-            GenerateBricks();
+            if (Keyboard.IsKeyPressed(Keyboard.Key.E))
+                NewGame();
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
+                _closeAction();
         }
-
-        _paddle.Update(deltaTime);
-
-        CheckCollision(deltaTime);
-        _ball.Update(deltaTime);
-
-        if (_health > 0)
-            return;
-        
-        // TODO: Display a game over screen and ask if the player want to play again
-
-        NewGame();
-
     }
 
     public void Render(RenderTarget target)
     {
-        foreach (var brick in _bricks)
+        if (!_isGameOver)
         {
-            target.Draw(brick);
+            foreach (var brick in _bricks)
+            {
+                target.Draw(brick);
+            }
+
+            _ball.Draw(target);
+
+            target.Draw(_paddle);
+
+            target.Draw(_scoreDisplay);
+            target.Draw(_healthDisplay);
         }
-        
-        _ball.Draw(target);
-        
-        target.Draw(_paddle);
+        else
+        {
+            target.Draw(_gameOverMessage);
+            target.Draw(_newGamePrompt);
+        }
     }
 }

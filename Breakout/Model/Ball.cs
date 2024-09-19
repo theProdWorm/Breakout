@@ -6,7 +6,7 @@ namespace Breakout.Model;
 public class Ball : Sprite
 {
     private readonly CircleShape _circle;
-    private readonly Vector2D _origin;
+    private readonly Vector2D _startingPosition;
 
     private readonly float _speed = 200f;
     
@@ -14,7 +14,7 @@ public class Ball : Sprite
     
     private Vector2D CircleCenter => _circle.Position + Vector2D.One * _circle.Radius;
 
-    public Ball(Texture texture, CircleShape circle, float scale, int screenWidth, int screenHeight) : base(texture)
+    public Ball(Texture texture, CircleShape circle, float scale, Vector2D startingPosition) : base(texture)
     {
         circle.Radius *= scale;
         _circle = circle;
@@ -22,8 +22,8 @@ public class Ball : Sprite
         float scaleFactor = _circle.Radius * 2 / texture.Size.X;
         Scale = new Vector2D(scaleFactor);
 
-        _origin = new Vector2D((screenWidth - _circle.Radius * 2f) * 0.5f, screenHeight - 95);
-        Position = _origin;
+        _startingPosition = startingPosition;
+        Position = _startingPosition;
     }
 
     public void Start()
@@ -108,6 +108,6 @@ public class Ball : Sprite
     public void Reset()
     {
         _velocity = Vector2D.Zero;
-        Position = _origin;
+        Position = _startingPosition;
     }
 }
