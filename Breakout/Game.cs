@@ -7,7 +7,8 @@ namespace Breakout;
 
 public class Game
 {
-    private static readonly Random _random = new Random();
+    public static readonly Random _random = new();
+    
     private static readonly float _scale = 0.6f;
 
     private readonly int _screenWidth;
@@ -151,6 +152,7 @@ public class Game
         if (_ball.WillCollide(deltaTime, _paddle.Collider, out Vector2D paddleCollisionPoint))
         {
             _ball.HandleCollision(paddleCollisionPoint);
+            _ball.PaddleCollision(_paddle.Velocity);
         }
         
         if (_ball.WillCollide(deltaTime, _hurtBox, out _))

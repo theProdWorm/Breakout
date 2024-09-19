@@ -12,7 +12,7 @@ public class Paddle : RectCollisionSprite
     
     private readonly Vector2D _origin;
 
-    private Vector2D _velocity = Vector2D.Zero;
+    public Vector2D Velocity { get; private set; }= Vector2D.Zero;
 
     public Paddle(Texture texture, Vector2D scale, int screenWidth, int screenHeight, CollidableRectangle leftWall, CollidableRectangle rightWall)
         : base(texture)
@@ -29,7 +29,7 @@ public class Paddle : RectCollisionSprite
 
     private void HandleInput()
     {
-        _velocity = Vector2D.Zero;
+        Velocity = Vector2D.Zero;
         
         bool right = Keyboard.IsKeyPressed(Keyboard.Key.D) || Keyboard.IsKeyPressed(Keyboard.Key.Right);
         bool left = Keyboard.IsKeyPressed(Keyboard.Key.A) || Keyboard.IsKeyPressed(Keyboard.Key.Left);
@@ -37,14 +37,14 @@ public class Paddle : RectCollisionSprite
         if (!(right ^ left))
             return;
         
-        _velocity = (right ? Vector2D.Right : Vector2D.Left) * _speed;
+        Velocity = (right ? Vector2D.Right : Vector2D.Left) * _speed;
     }
 
     public void Update(float deltaTime)
     {
         HandleInput();
         
-        Vector2D nextPosition = Position + _velocity * deltaTime;
+        Vector2D nextPosition = Position + Velocity * deltaTime;
 
         if (nextPosition.X <= _leftWall.Position.X + _leftWall.Size.X)
         {
@@ -62,7 +62,7 @@ public class Paddle : RectCollisionSprite
 
     public void Reset()
     {
-        _velocity = Vector2D.Zero;
+        Velocity = Vector2D.Zero;
         Position = _origin;
     }
 }

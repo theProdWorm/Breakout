@@ -28,7 +28,10 @@ public class Ball : Sprite
 
     public void Start()
     {
-        _velocity = Vector2D.NegativeOne * _speed;
+        Vector2D velocity = new Vector2D(Game._random.Next(2) == 0 ? -1 : 1, -1);
+        velocity = velocity.Normalized * _speed;
+
+        _velocity = velocity;
     }
     
     public void Update(float deltaTime)
@@ -96,6 +99,16 @@ public class Ball : Sprite
             _velocity = new Vector2D(-_velocity.X, _velocity.Y);
         if(collisionNormal.Y != 0)
             _velocity = new Vector2D(_velocity.X, -_velocity.Y);
+    }
+
+    public void PaddleCollision(Vector2D paddleVelocity)
+    {
+        Vector2D newVelocity = _velocity.Normalized;
+        newVelocity += paddleVelocity.Normalized;
+
+        newVelocity = newVelocity.Normalized * _speed;
+        
+        _velocity = newVelocity;
     }
 
     public void Draw(RenderTarget target)
