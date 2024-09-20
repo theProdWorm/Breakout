@@ -93,7 +93,7 @@ public class Ball : Sprite
         return false;
     }
 
-    public void HandleCollision(Vector2D collisionNormal)
+    public void HandleWillCollide(Vector2D collisionNormal)
     {
         if(collisionNormal.X != 0)
             _velocity = new Vector2D(-_velocity.X, _velocity.Y);
@@ -101,7 +101,7 @@ public class Ball : Sprite
             _velocity = new Vector2D(_velocity.X, -_velocity.Y);
     }
 
-    public void PaddleCollision(Vector2D paddleVelocity)
+    public void HandlePaddleWillCollide(Vector2D paddleVelocity, Vector2D paddlePosition)
     {
         Vector2D newVelocity = _velocity.Normalized;
         newVelocity += paddleVelocity.Normalized;
@@ -109,6 +109,9 @@ public class Ball : Sprite
         newVelocity = newVelocity.Normalized * _speed;
         
         _velocity = newVelocity;
+
+        Position = new Vector2f(Position.X, paddlePosition.Y - _circle.Radius * 2);
+        _circle.Position = Position;
     }
 
     public void Draw(RenderTarget target)

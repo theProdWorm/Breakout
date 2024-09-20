@@ -137,22 +137,22 @@ public class Game
             if (!_ball.WillCollide(deltaTime, brick.Collider, out Vector2D brickCollisionPoint))
                 continue;
             
-            _ball.HandleCollision(brickCollisionPoint);
+            _ball.HandleWillCollide(brickCollisionPoint);
             _bricks.RemoveAt(i--);
             _score += _timesCleared + 1;
             UpdateUI();
+        }
+
+        if (_ball.WillCollide(deltaTime, _paddle.Collider, out Vector2D paddleCollisionPoint))
+        {
+            _ball.HandleWillCollide(paddleCollisionPoint);
+            _ball.HandlePaddleWillCollide(_paddle.Velocity, (Vector2D)_paddle.Position);
         }
         
         foreach (var wall in _walls)
         {
             if (_ball.WillCollide(deltaTime, wall, out Vector2D wallCollisionPoint))
-                _ball.HandleCollision(wallCollisionPoint);
-        }
-
-        if (_ball.WillCollide(deltaTime, _paddle.Collider, out Vector2D paddleCollisionPoint))
-        {
-            _ball.HandleCollision(paddleCollisionPoint);
-            _ball.PaddleCollision(_paddle.Velocity);
+                _ball.HandleWillCollide(wallCollisionPoint);
         }
         
         if (_ball.WillCollide(deltaTime, _hurtBox, out _))
