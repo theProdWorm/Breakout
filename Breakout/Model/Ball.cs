@@ -8,11 +8,11 @@ public class Ball : Sprite
     private readonly CircleShape _circle;
     private readonly Vector2D _startingPosition;
 
-    private readonly float _speed = 200f;
+    private readonly float _speed = 350f;
     
     private Vector2D _velocity = Vector2D.Zero;
     
-    private Vector2D CircleCenter => _circle.Position + Vector2D.One * _circle.Radius;
+    public Vector2D CircleCenter => _circle.Position + Vector2D.One * _circle.Radius;
 
     public Ball(Texture texture, CircleShape circle, float scale, Vector2D startingPosition) : base(texture)
     {

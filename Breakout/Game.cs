@@ -76,7 +76,7 @@ public class Game
         _hurtBox = new CollidableRectangle(new Vector2f(screenWidth, 10), new Vector2f(0, screenHeight));
         
         _ball = new Ball(ballTexture, new CircleShape(30), _scale, new Vector2D(screenWidth * 0.5f - 30, screenHeight - 95));
-        _paddle = new Paddle(paddleTexture, Vector2D.One * 0.25f, screenWidth, screenHeight, leftWall, rightWall);
+        _paddle = new Paddle(paddleTexture, Vector2D.One * 0.25f, screenWidth, screenHeight, leftWall, rightWall, _ball);
         
         _font = new Font("Assets/future.ttf");
         _gameOverMessage = new Text("Game Over", _font, 40);
@@ -145,13 +145,13 @@ public class Game
         
         foreach (var wall in _walls)
         {
-            if (_ball.WillCollide(deltaTime, wall, out Vector2D wallCollisionPoint))
-                _ball.HandleCollision(wallCollisionPoint);
+            if (_ball.WillCollide(deltaTime, wall, out Vector2D wallCollisionNormal))
+                _ball.HandleCollision(wallCollisionNormal);
         }
 
-        if (_ball.WillCollide(deltaTime, _paddle.Collider, out Vector2D paddleCollisionPoint))
+        if (_ball.WillCollide(deltaTime, _paddle.Collider, out Vector2D paddleCollisionNormal))
         {
-            _ball.HandleCollision(paddleCollisionPoint);
+            _ball.HandleCollision(paddleCollisionNormal);
             _ball.PaddleCollision(_paddle.Velocity);
         }
         
